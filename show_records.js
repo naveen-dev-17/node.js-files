@@ -8,7 +8,7 @@ function get_records(db_connection)
         {
             if (err) return response.json({ error: err.message });
 
-            const columns = fields.map(f => f.name);
+            const columns = fields.map(field => field.name);
             response.json({ columns, data: rows });
         });
     };
