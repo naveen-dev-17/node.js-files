@@ -39,7 +39,7 @@ function save_record(db_connection)
         const { sql, values } = is_update
             ? build_update_query(table, data, id, primaryKey)
             : build_insert_query(table, data);
-        const success_message = is_update ? "Updated the row" : "Inserted";
+        const success_message = is_update ? "Updated row" : "Inserted";
 
         execute_query(db_connection, response, sql, values, success_message);
     };
