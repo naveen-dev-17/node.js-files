@@ -1,6 +1,6 @@
-function execute_query(db_connection, response, sql, values, success_message)
+function execute_query(db_connection, response, sql_query, values, success_message)
 {
-    db_connection.query(sql, values, (err, result) =>
+    db_connection.query(sql_query, values, (err, result) =>
     {
         if (err) return response.status(500).send(err.message);
         if (!result.affectedRows) return response.status(404).send(`${success_message.split(" ")[0]} Failed`);
@@ -13,9 +13,9 @@ function build_update_query(table, data, id, primaryKey)
     const keys = Object.keys(data).filter(key => key !== primaryKey);
     const set_clause = keys.map(key => `\`${key}\`=?`).join(", ");
     const values = [...keys.map(key => data[key]), id];
-    const sql = `UPDATE \`${table}\` SET ${set_clause} WHERE \`${primaryKey}\`=?`;
+    const sql_query = `UPDATE \`${table}\` SET ${set_clause} WHERE \`${primaryKey}\`=?`;
 
-    return { sql, values };
+    return { sql_query, values };
 }
 
 function build_insert_query(table, data)
@@ -24,9 +24,9 @@ function build_insert_query(table, data)
     const columns = keys.map(key => `\`${key}\``).join(", ");
     const placeholders = keys.map(() => "?").join(", ");
     const values = keys.map(key => data[key]);
-    const sql = `INSERT INTO \`${table}\` (${columns}) VALUES (${placeholders})`;
+    const sql_query = `INSERT INTO \`${table}\` (${columns}) VALUES (${placeholders})`;
 
-    return { sql, values };
+    return { sql_query, values };
 }
 
 function save_record(db_connection)
